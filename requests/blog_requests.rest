@@ -6,8 +6,8 @@ POST http://localhost:3003/api/blogs HTTP/1.1
 Content-Type: application/json
 
 {
-    "title": "My Burogu",
-    "author": "Luis",
+    "title": "My Burogu222",
+    "author": "Luis2",
     "url": "https://reddit.com",
     "likes": 0
 }
