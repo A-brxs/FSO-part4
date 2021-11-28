@@ -15,7 +15,7 @@ beforeEach(async () => {
   await Promise.all(promiseArray)
 })
 
-describe('BLOG API Tests', () => {
+describe('BLOG READ API Tests', () => {
   test('blogs are returned as json', async () => {
     await api
       .get('/api/blogs')
@@ -36,6 +36,9 @@ describe('BLOG API Tests', () => {
     }
   })
 
+})
+
+describe('BLOG CREATE API Tests', () => {
   test('verify blog creation', async () => {
     const newBlog = {
       author: 'luis',
@@ -80,6 +83,58 @@ describe('BLOG API Tests', () => {
       .send(newBlog)
       .expect(400)
       .expect('Content-Type',/application\/json/)
+  })
+})
+
+describe('BLOG UPDATE API Tests', () => {
+  test('verify blog like update', async () => {
+    const newBlog = {
+      author: 'luis',
+      title: 'test',
+      url: 'google',
+      likes: 999
+    }
+    const updatedBlog = {
+      likes: 3333
+    }
+
+    let createdBlog = await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type',/application\/json/)
+
+    expect(createdBlog.body.likes).toEqual(999)
+    const createdBlogId = createdBlog.body.id
+
+    let res = await api
+      .put(`/api/blogs/${createdBlogId}`)
+      .send(updatedBlog)
+      .expect(200)
+      .expect('Content-Type',/application\/json/)
+
+    expect(res.body.likes).toEqual(3333)
+  })
+})
+
+describe('BLOG DELETE API Tests', () => {
+  test('verify blog deletion', async () => {
+    const newBlog = {
+      author: 'luis',
+      title: 'test',
+      url: 'google',
+      likes: 999
+    }
+
+    let res = await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type',/application\/json/)
+
+    await api
+      .delete(`/api/blogs/${res.body.id}`)
+      .expect(200)
   })
 })
 
