@@ -1,6 +1,5 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
-const User = require('../models/user')
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog
@@ -20,8 +19,10 @@ blogsRouter.post('/', async (request, response, next) => {
       error: 'URL Missing'
     })
   }
-
-  const user = await User.findById(body.userId)
+  if (!request.token || !request.user) {
+    return response.status(401).json({ error: 'token missing or invalid' })
+  }
+  const user = request.user
   const blog = new Blog(request.body)
   blog.user = user._id
 
@@ -33,8 +34,21 @@ blogsRouter.post('/', async (request, response, next) => {
 })
 
 blogsRouter.delete('/:id', async (request,response) => {
-  await Blog.findByIdAndRemove(request.params.id)
-  response.status(200).end()
+  const user = request.user
+  const blog = await Blog.findById(request.params.id)
+  if (!request.token || !request.user) {
+    return response.status(401).json({ error: 'token missing or invalid' }).end()
+  }
+  if (!blog ) {
+    return response.status(404).json({ error: 'blog id not found' }).end()
+  }
+  if ( blog.user.toString() === user.id.toString() ) {
+    await Blog.findByIdAndRemove(request.params.id)
+    response.status(200).end()
+  } else {
+    response.status(400).json({ error: 'invalid token' }).end()
+  }
+
 })
 
 blogsRouter.put('/:id', async (request,response) => {

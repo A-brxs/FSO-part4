@@ -2,14 +2,33 @@ GET http://localhost:3003/api/blogs
 
 ###
 
-POST http://localhost:3003/api/blogs HTTP/1.1
+POST http://localhost:3003/api/login HTTP/1.1
 Content-Type: application/json
 
 {
-    "title": "test5",
-    "author": "Luis222",
-    "url": "https://reddiasdasdat.com",
-    "userId": "61a547fab91809a89e4bf1ec"
+    "username": "LuisD",
+    "password": "123456789"
 }
 ###
-DELETE http://localhost:3003/api/blogs/61a3f95ae7e210896b79bf82
+POST http://localhost:3003/api/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "Pedrojuan",
+    "password": "123456789"
+}
+###
+POST http://localhost:3003/api/blogs HTTP/1.1
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ikx1aXNEIiwiaWQiOiI2MWE1NDdmYWI5MTgwOWE4OWU0YmYxZWMiLCJpYXQiOjE2MzgyMjY4NzB9.bIP_7C5YNHbn9_lMMfRzEeXWr0_3iLFpJZdVkQsXhZY
+
+{
+    "title": "test33",
+    "author": "Luis444",
+    "url": "https://reddiasdasdat.com"
+}
+###
+DELETE http://localhost:3003/api/blogs/61a560e72d21067b07aa705e HTTP/1.1
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ikx1aXNEIiwiaWQiOiI2MWE1NDdmYWI5MTgwOWE4OWU0YmYxZWMiLCJpYXQiOjE2MzgyMjY4NzB9.bIP_7C5YNHbn9_lMMfRzEeXWr0_3iLFpJZdVkQsXhZY
+
