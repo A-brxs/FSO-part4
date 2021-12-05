@@ -55,17 +55,21 @@ blogsRouter.delete('/:id', async (request,response) => {
 })
 
 blogsRouter.put('/:id', async (request,response) => {
-  const body = request.body
-  if (!request.token || !request.user) {
-    return response.status(401).json({ error: 'token missing or invalid' }).end()
-  }
-  const blog = {
-    likes: body.likes
-  }
-  const opts = {
-    runValidators: true, new: true
-  }
-  let updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, opts )
-  response.status(200).json(updatedBlog)
+  const blog = request.body
+
+  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
+  response.json(updatedBlog.toJSON())
+  // const body = request.body
+  // if (!request.token || !request.user) {
+  //   return response.status(401).json({ error: 'token missing or invalid' }).end()
+  // }
+  // const blog = {
+  //   likes: body.likes
+  // }
+  // const opts = {
+  //   runValidators: true, new: true
+  // }
+  // let updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, opts )
+  // response.status(200).json(updatedBlog)
 })
 module.exports = blogsRouter
